@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 — proposed initial preview, unreleased
+## 0.1.0 — Initial preview
 
 ### Added
 
@@ -26,6 +26,10 @@
   tested versions, not supported minimums.
 - Potential restoration destinations, current workspaces and sticky windows are
   protected. Exact one-spare convergence can be deferred conservatively.
-- Real logout/login regression and broader hardware/version testing remain open.
+- The maintainer reports that the real logout/login regression passed on the
+  validated environment: one occupied desktop, one trailing empty spare, and two
+  indicators. The startup bug did not recur.
+- Broader Plasma-version, distribution, hardware, monitor and activity testing
+  remains limited; this single-system result does not expand compatibility claims.
 
 Upstream release notes remain in [docs/upstream-changelog.md](docs/upstream-changelog.md).

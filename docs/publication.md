@@ -1,11 +1,12 @@
-# Proposed publication — approval required
+# Publication procedure
 
-Prepared repository: `HUSTLRX/plasma-flow` (public).
+Repository: `HUSTLRX/plasma-flow` (public).
 
 Description/topics are in `github-metadata.json`. Release title and body are in
-`release-notes-0.1.0.md`. Proposed first version: **0.1.0**, marked as a GitHub
-prerelease. The remaining real-login and broader compatibility validation do not
-yet justify a stable 1.0.0 claim.
+`release-notes-0.1.0.md`. Initial version: **0.1.0**, marked as a GitHub prerelease.
+The real login regression passed on the validated system, as reported by the
+maintainer. Broader compatibility coverage remains limited, so the preview
+designation remains appropriate.
 
 Nothing in preparation creates a GitHub repository, pushes commits or tags, or
 creates a release. Remotes are configured as:
@@ -13,7 +14,8 @@ creates a release. Remotes are configured as:
 - `origin`: `https://github.com/HUSTLRX/plasma-flow.git`
 - `upstream`: `https://github.com/lenonk/virtual-desktop-bar.git`
 
-After explicit approval, the intended actions are:
+Publication was explicitly approved after the documentation update and final
+checks. The publication procedure is:
 
 1. Recheck clean status, privacy audit, tests and the exact commit to publish.
 2. Create the public repository without generated README/license/gitignore files.

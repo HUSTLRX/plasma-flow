@@ -60,6 +60,8 @@ creation notification, preventing duplicate indicators from queued initial event
 
 Tests cover a persisted third desktop, readiness transitions without task-count
 changes, idempotence, delayed windows, membership changes, global occupancy,
-protected restoration destinations and conservative exceptions. A real logout/login
-regression still needs confirmation; simulated startup and a runtime trim check do
-not substitute for it.
+protected restoration destinations and conservative exceptions. Separately, the
+maintainer reports that a real logout/login regression passed on Fedora 44, Plasma
+6.7.5, Frameworks 6.30, Wayland: one occupied desktop plus one trailing empty spare
+and two indicators, with no recurrence of the startup bug. This result is limited
+to that tested system and does not certify other configurations.

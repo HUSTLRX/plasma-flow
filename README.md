@@ -169,8 +169,11 @@ settings are reused; the project does not impose a saved desktop count.
   inferred from an empty window list.
 - Vertical-panel behavior and physical multi-monitor combinations need broader
   testing. Automated cross-screen/activity tests are not hardware certification.
-- Full logout/login regression validation is still pending. The proposed `0.1.0`
-  release is an initial preview, not a declaration of broad production stability.
+- The maintainer reports a successful real logout/login regression on Fedora 44,
+  Plasma 6.7.5, Frameworks 6.30, Wayland: one occupied desktop plus one trailing
+  empty spare, with two indicators and no recurrence of the startup bug. This
+  single-system result does not establish broader compatibility. `0.1.0` remains
+  an initial preview.
 
 See [reconciliation and startup safety](docs/reconciliation.md) for the exact
 policy and [differences from upstream](docs/upstream.md) for compatibility choices.

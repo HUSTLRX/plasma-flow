@@ -51,8 +51,15 @@ New commits introduce none of those historical assets or any personal machine da
 
 ## Remaining release limits
 
-Full logout/login startup validation remains pending. Protected restoration ranges
-can retain extra empty workspaces; physical multi-monitor/activity and other-version
-coverage is limited. These limitations motivate the proposed **0.1.0 preview**
-instead of a stable 1.0.0 claim. No GitHub repository, push, project tag or release
-was created during preparation.
+The maintainer subsequently reported successful real logout/login startup
+validation on Fedora 44, Plasma 6.7.5, Frameworks 6.30, Wayland. After login, the
+system returned to one occupied desktop plus exactly one trailing empty spare
+and two workspace indicators; the previous startup bug did not recur. This was
+a real-world test reported outside the automated test session, not another
+simulated test.
+
+Protected restoration ranges can still retain extra empty workspaces. Broader
+Plasma-version, distribution, hardware, multi-monitor and activity coverage remains
+limited. The single-system result does not expand compatibility claims; **0.1.0**
+remains an initial preview rather than a stable 1.0.0 release. No GitHub repository,
+push, project tag or release was created during the original preparation phase.

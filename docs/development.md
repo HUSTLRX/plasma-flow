@@ -56,7 +56,8 @@ protected implementation code, update its regression tests and explicitly review
 and update the relevant hashes in the same change; the file is an integrity record,
 not a dependency on a missing source repository.
 
-Before a stable 1.0 release, validate actual logout/login with and without saved
+A real logout/login regression has passed on the validated environment, as
+reported by the maintainer. Before a stable 1.0 release, extend coverage with and without saved
 applications, delayed restoration, multiple activities, physical monitors and
 sticky windows. Record versions and outcomes, not users' raw configs or window
 identifiers. Broader compatibility claims require corresponding evidence.

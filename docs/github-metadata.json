@@ -2,11 +2,20 @@
   "repository": "HUSTLRX/plasma-flow",
   "visibility": "public",
   "description": "Dynamic workspaces for KDE Plasma, with label-free indicators and conservative startup reconciliation. Independent community project.",
-  "topics": ["kde", "kde-plasma", "plasma6", "wayland", "plasmoid", "virtual-desktops", "workspaces", "qml", "cpp"],
-  "proposed_version": "0.1.0",
-  "proposed_tag": "v0.1.0",
-  "release_title": "Plasma Flow 0.1.0 — Initial preview",
+  "topics": [
+    "kde",
+    "kde-plasma",
+    "plasma6",
+    "wayland",
+    "plasmoid",
+    "virtual-desktops",
+    "workspaces",
+    "qml",
+    "cpp"
+  ],
+  "release_title": "Plasma Flow 0.1.0 \u2014 Initial preview",
   "prerelease": true,
   "release_notes_file": "docs/release-notes-0.1.0.md",
-  "publication_status": "Prepared locally; not published"
+  "version": "0.1.0",
+  "tag": "v0.1.0"
 }
