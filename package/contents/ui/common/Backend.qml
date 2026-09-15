@@ -21,15 +21,9 @@ VirtualDesktopBar {
     }
 
     onDesktopCreated: function (desktopId, desktopData) {
-        let newDesktop = {
-            "id": desktopData.id || 0,
-            "uuid": desktopId,
-            "name": desktopData.name || "Desktop " + (desktopInfoList.count + 1),
-            "is_current": false,
-            "has_windows": false,
-        };
-
-        desktopInfoList.append(newDesktop);
+        // A queued creation signal may already be represented in the initial
+        // DBus snapshot. Refresh by UUID instead of appending it twice.
+        initializeDesktopInfoList(backend.requestDesktopInfoList());
     }
 
     onDesktopRemoved: function (desktopId) {

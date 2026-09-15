@@ -23,6 +23,11 @@ function _width(args) {
         usesLabelMetrics
     } = args;
 
+    if (config.LabelStyle === 5) {
+        return style === IndicatorStyles.SideLine
+            ? config.IndicatorLineThickness : config.NoneIndicatorWidth;
+    }
+
     if (isVertical) {
         if (style === IndicatorStyles.SideLine)
             return config.IndicatorLineThickness;
@@ -50,6 +55,11 @@ function _height(args) {
         usesLabelMetrics
     } = args;
 
+    if (config.LabelStyle === 5) {
+        return style === IndicatorStyles.EdgeLine
+            ? config.IndicatorLineThickness : config.NoneIndicatorHeight;
+    }
+
     if (style === IndicatorStyles.FullSize) {
         if (isVertical)
             return parentHeight + 0.5 - 2 * config.ButtonSpacing;
@@ -71,6 +81,14 @@ function _x(args) {
         spacing,
         fillButton
     } = args;
+
+    if (config.LabelStyle === 5) {
+        if (style === IndicatorStyles.SideLine) {
+            const inset = (parentWidth - config.NoneIndicatorWidth) / 2;
+            return config.IndicatorInvert ? parentWidth - widthValue - inset : inset;
+        }
+        return (parentWidth - widthValue) / 2;
+    }
 
     if (isVertical) {
         if (style !== IndicatorStyles.SideLine)
@@ -96,7 +114,7 @@ function _y(args) {
         usesLabelMetrics
     } = args;
 
-    if (usesLabelMetrics)
+    if (usesLabelMetrics || (config.LabelStyle === 5 && style !== IndicatorStyles.EdgeLine))
         return (parentHeight - heightValue) / 2;
 
     if (isTopLocation)
@@ -111,6 +129,11 @@ function _y(args) {
 
 function _radius(args) {
     const { style, config } = args;
+
+    if (config.LabelStyle === 5 &&
+        (style === IndicatorStyles.Block || style === IndicatorStyles.Rounded)) {
+        return Math.min(config.NoneIndicatorRadius, config.NoneIndicatorWidth / 2, config.NoneIndicatorHeight / 2);
+    }
 
     if (style === IndicatorStyles.Block)
         return config.IndicatorBlockRadius;

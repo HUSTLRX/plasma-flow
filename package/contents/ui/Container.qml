@@ -31,8 +31,16 @@ Item {
         activityInfoList: root.activityInfoList
     }
 
-    Component.onCompleted: {
-        manageDynamicDesktops();
+    Component.onCompleted: configureDynamicDesktops()
+    property bool dynamicEnabled: config.DynamicDesktops
+    property string dynamicName: config.EmptyDesktopName.length > 0 ? config.EmptyDesktopName : "New Desktop"
+    property string dynamicCommand: config.NewDesktopCommand
+    onDynamicEnabledChanged: configureDynamicDesktops()
+    onDynamicNameChanged: configureDynamicDesktops()
+    onDynamicCommandChanged: configureDynamicDesktops()
+
+    function configureDynamicDesktops() {
+        if (backend) backend.configureDynamicDesktops(dynamicEnabled, dynamicName, dynamicCommand);
     }
 
     property bool isRenamingDesktop: renamePopup.visible
@@ -58,7 +66,7 @@ Item {
         enabled: target !== null
 
         function onCountChanged() {
-            if (config.EmptyDesktopName.length > 0 || config.DynamicDesktops) {
+            if (config.EmptyDesktopName.length > 0 && !config.DynamicDesktops) {
                 if (!checkEmptyTimer.running) {
                     checkEmptyTimer.start();
                 }
@@ -238,47 +246,6 @@ Item {
             }
         }
 
-        // Handle dynamic desktops
-        manageDynamicDesktops();
-    }
-
-    function manageDynamicDesktops() {
-        if (!config.DynamicDesktops) return;
-
-        let newDesktopName = config.EmptyDesktopName.length > 0 ? config.EmptyDesktopName : "New Desktop";
-        let activityId = backend.getCurrentActivityId();
-        let emptyDesktops = [];
-
-        // Count empty and occupied desktops
-        for (let i = 0; i < desktopInfoList.count; i++) {
-            let desktop = desktopInfoList.get(i);
-
-            if (!Common.TaskManager.hasWindows(desktop.uuid, activityId)) {
-                emptyDesktops.push(desktop.uuid);
-            }
-        }
-
-        if (desktopInfoList.count > 1 && emptyDesktops.length > 1) {
-            for (let i = 0; i < emptyDesktops.length - 1; i++) {
-                // Too many empty desktops - remove extras (but keep at least 1 desktop total)
-                backend.removeDesktop(emptyDesktops[i]);
-            }
-        }
-
-        // Rule: Always have exactly one spare empty desktop
-        if (emptyDesktops.length === 0) {
-            // No empty desktops - create one
-            backend.createDesktop(desktopInfoList.count, newDesktopName);
-
-            if (config.NewDesktopCommand.length > 0) {
-                backend.run(config.NewDesktopCommand);
-            }
-        }
-
-        for (let i = 1; i < desktopInfoList.count; i++) {
-            let desktop = desktopInfoList.get(i);
-            backend.setDesktopName(desktop.uuid, newDesktopName)
-        }
     }
 
     function updateWindowCounts() {

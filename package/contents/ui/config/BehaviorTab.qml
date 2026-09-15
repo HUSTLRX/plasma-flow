@@ -24,6 +24,10 @@ KCM.SimpleKCM {
     property bool   cfg_ButtonCommonSize
     property bool   cfg_ShowOnlyCurrent
     property bool   cfg_ShowOnlyOccupied
+    property int    cfg_NoneIndicatorWidth
+    property int    cfg_NoneIndicatorHeight
+    property int    cfg_NoneButtonSpacing
+    property int    cfg_NoneIndicatorRadius
     property int    cfg_LabelStyle
     property string cfg_LabelCustomFormat
     property int    cfg_LabelMaxLength
@@ -66,6 +70,10 @@ KCM.SimpleKCM {
     property bool   cfg_ButtonCommonSizeDefault
     property bool   cfg_ShowOnlyCurrentDefault
     property bool   cfg_ShowOnlyOccupiedDefault
+    property int    cfg_NoneIndicatorWidthDefault
+    property int    cfg_NoneIndicatorHeightDefault
+    property int    cfg_NoneButtonSpacingDefault
+    property int    cfg_NoneIndicatorRadiusDefault
     property int    cfg_LabelStyleDefault
     property string cfg_LabelCustomFormatDefault
     property int    cfg_LabelMaxLengthDefault

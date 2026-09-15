@@ -34,17 +34,23 @@ Rectangle {
 
     property alias mouseArea: _mouseArea
 
+    readonly property bool noLabel: config.LabelStyle === 5
+
     property int verticalMargins: 5
     property int horizontalPadding: config.ButtonMarginHorizontal + (Common.LayoutProps.isVerticalOrientation ? 0 : config.ButtonSpacing)
     property int verticalPadding: config.ButtonMarginVertical + (Common.LayoutProps.isVerticalOrientation ? config.ButtonSpacing : 0)
 
     Layout.fillHeight: !Common.LayoutProps.isVerticalOrientation
     Layout.fillWidth: Common.LayoutProps.isVerticalOrientation
-    Layout.topMargin: verticalMargins
-    Layout.bottomMargin: verticalMargins
+    Layout.topMargin: noLabel ? 0 : verticalMargins
+    Layout.bottomMargin: noLabel ? 0 : verticalMargins
 
-    implicitHeight: label.implicitHeight + 2 * verticalPadding + (Common.LayoutProps.isVerticalOrientation ? indicator.sideLineLabelReserve : 0)
-    implicitWidth: label.implicitWidth + 2 * horizontalPadding + (Common.LayoutProps.isVerticalOrientation ? 0 : indicator.sideLineLabelReserve)
+    implicitHeight: noLabel ? config.NoneIndicatorHeight +
+        (Common.LayoutProps.isVerticalOrientation ? config.NoneButtonSpacing : 2 * verticalMargins) :
+        label.implicitHeight + 2 * verticalPadding + (Common.LayoutProps.isVerticalOrientation ? indicator.sideLineLabelReserve : 0)
+    implicitWidth: noLabel ? config.NoneIndicatorWidth +
+        (Common.LayoutProps.isVerticalOrientation ? 2 * verticalMargins : config.NoneButtonSpacing) :
+        label.implicitWidth + 2 * horizontalPadding + (Common.LayoutProps.isVerticalOrientation ? 0 : indicator.sideLineLabelReserve)
 
     opacity: applyOpacityRules()
     color: applyColorRules()
@@ -231,6 +237,7 @@ Rectangle {
 
     DesktopButtonLabel {
         id: label
+        visible: !noLabel
         text: getButtonLabel()
     }
 
@@ -411,6 +418,8 @@ Rectangle {
     }
 
     function getButtonLabel() {
+        if (noLabel) return "";
+
         let labelText = name;
 
         if (config.LabelStyle === IndicatorStyles.SideLine) {

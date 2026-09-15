@@ -13,6 +13,7 @@
 #include <PlasmaActivities/Consumer>
 
 #include "VirtualDesktopBar.hpp"
+#include "dynamic/DynamicDesktops.hpp"
 
 #define QSL(str) QStringLiteral(str)
 
@@ -64,7 +65,13 @@ VirtualDesktopBar::VirtualDesktopBar(QObject *parent) : QObject(parent) {
     connectToDBusSignals();
 }
 
-VirtualDesktopBar::~VirtualDesktopBar() = default;
+VirtualDesktopBar::~VirtualDesktopBar() {
+    DynamicDesktops::instance()->forget(this);
+}
+
+void VirtualDesktopBar::configureDynamicDesktops(bool enabled, const QString &name, const QString &command) {
+    DynamicDesktops::instance()->configure(this, enabled, name, command);
+}
 
 void VirtualDesktopBar::startSignalTrace(QObject *target, const QString &label) {
     if (!target) {

@@ -3,6 +3,9 @@ set(virtualdesktopbar_SRCS
         VirtualDesktopBar.cpp
         VirtualDesktopBarPlugin.cpp
         VirtualDesktopBar.hpp
+        dynamic/DynamicDesktops.cpp
+        dynamic/DynamicDesktops.hpp
+        dynamic/dynamic.qrc
 )
 
 set(CMAKE_AUTOMOC ON)

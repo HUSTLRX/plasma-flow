@@ -49,6 +49,10 @@ KCM.SimpleKCM {
     property bool   cfg_ButtonCommonSizeDefault
     property bool   cfg_ShowOnlyCurrentDefault
     property bool   cfg_ShowOnlyOccupiedDefault
+    property int    cfg_NoneIndicatorWidthDefault
+    property int    cfg_NoneIndicatorHeightDefault
+    property int    cfg_NoneButtonSpacingDefault
+    property int    cfg_NoneIndicatorRadiusDefault
     property int    cfg_LabelStyleDefault
     property string cfg_LabelCustomFormatDefault
     property int    cfg_LabelMaxLengthDefault
@@ -89,6 +93,12 @@ KCM.SimpleKCM {
     property alias cfg_ButtonCommonSize: buttonCommonSizeCheckBox.checked
     property alias cfg_ShowOnlyCurrent: showOnlyCurrentCheckBox.checked
     property alias cfg_ShowOnlyOccupied: showOnlyOccupiedCheckBox.checked
+
+    // Indicator-only sizing
+    property alias cfg_NoneIndicatorWidth: noneIndicatorWidthSpinBox.value
+    property alias cfg_NoneIndicatorHeight: noneIndicatorHeightSpinBox.value
+    property alias cfg_NoneButtonSpacing: noneButtonSpacingSpinBox.value
+    property alias cfg_NoneIndicatorRadius: noneIndicatorRadiusSpinBox.value
 
     // Desktop labels
     property alias cfg_LabelStyle: labelStyleComboBox.currentIndex
@@ -153,6 +163,7 @@ KCM.SimpleKCM {
 
         Item { Kirigami.FormData.isSection: true }
         RowLayout {
+            visible: cfg_LabelStyle != 5
             Kirigami.FormData.label: "Desktop Buttons:"
             Label {
                 text: "Vertical margins:"
@@ -180,6 +191,7 @@ KCM.SimpleKCM {
         }
 
         RowLayout {
+            visible: cfg_LabelStyle != 5
             Label {
                 text: "Horizontal margins:"
             }
@@ -206,6 +218,7 @@ KCM.SimpleKCM {
         }
 
         RowLayout {
+            visible: cfg_LabelStyle != 5
             Label {
                 enabled: buttonSpacingSpinBox.enabled
                 text: "Spacing between buttons:"
@@ -230,6 +243,7 @@ KCM.SimpleKCM {
         }
 
         RowLayout {
+            visible: cfg_LabelStyle != 5
             CheckBox {
                 id: buttonCommonSizeCheckBox
                 text: "Set common size for all buttons"
@@ -265,7 +279,8 @@ KCM.SimpleKCM {
                     "Number",
                     "Number: name",
                     "Active window's name",
-                    "Custom format"
+                    "Custom format",
+                    "None"
                 ]
                 onCurrentIndexChanged: {
                     if (cfg_LabelStyle == 4) {
@@ -307,6 +322,43 @@ KCM.SimpleKCM {
                           <tt>$WR</tt> = <tt>$W</tt>, or <tt>$R</tt> if there are no windows<br>
                           <tt>$WN</tt> = <tt>$W</tt>, or <tt>$N</tt> if there are no windows"
             }
+        }
+
+        PXSpinBox {
+            id: noneIndicatorWidthSpinBox
+            Kirigami.FormData.label: "Indicator width:"
+            visible: cfg_LabelStyle == 5
+            from: 4
+            to: 200
+            suffix: " px"
+        }
+
+        PXSpinBox {
+            id: noneIndicatorHeightSpinBox
+            Kirigami.FormData.label: "Indicator height:"
+            visible: cfg_LabelStyle == 5
+            from: 2
+            to: 100
+            suffix: " px"
+        }
+
+        PXSpinBox {
+            id: noneButtonSpacingSpinBox
+            Kirigami.FormData.label: "Button spacing:"
+            visible: cfg_LabelStyle == 5
+            from: 0
+            to: 100
+            suffix: " px"
+        }
+
+        PXSpinBox {
+            id: noneIndicatorRadiusSpinBox
+            Kirigami.FormData.label: "Corner radius:"
+            visible: cfg_LabelStyle == 5 &&
+                (cfg_IndicatorStyle == IndicatorStyles.Block || cfg_IndicatorStyle == IndicatorStyles.Rounded)
+            from: 0
+            to: 100
+            suffix: " px"
         }
 
         RowLayout {
@@ -551,7 +603,7 @@ KCM.SimpleKCM {
             PXSpinBox {
                 id: indicatorBlockRadiusSpinBox
                 value: cfg_IndicatorBlockRadius
-                visible: cfg_IndicatorStyle == IndicatorStyles.Block
+                visible: cfg_LabelStyle != 5 && cfg_IndicatorStyle == IndicatorStyles.Block
                 from: 0
                 to: 300
                 suffix: " px corner radius"

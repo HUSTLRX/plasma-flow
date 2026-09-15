@@ -68,6 +68,7 @@ public:
     Q_INVOKABLE static QSize getCursorSize() ;
     Q_INVOKABLE static bool isMouseButtonPressed() ;
     Q_INVOKABLE static void run(const QString &cmd);
+    Q_INVOKABLE void configureDynamicDesktops(bool enabled, const QString &name, const QString &command);
     Q_INVOKABLE void startSignalTrace(QObject *target, const QString &label = QString());
     Q_INVOKABLE void stopSignalTrace(QObject *target);
     Q_INVOKABLE void stopAllSignalTraces();
