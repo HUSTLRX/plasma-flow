@@ -17,9 +17,9 @@ After explicit approval, the intended actions are:
 
 1. Recheck clean status, privacy audit, tests and the exact commit to publish.
 2. Create the public repository without generated README/license/gitignore files.
-3. Set its description, topics and default branch `main`.
-4. Push only `main` to `origin`, retaining its upstream ancestry. Do not mirror
-   upstream refs or push all historical tags.
+3. Set its description and topics.
+4. Push only `main` to `origin`, retaining its upstream ancestry, then set it as
+   the default branch. Do not mirror upstream refs or push all historical tags.
 5. Create annotated tag `v0.1.0` on the approved commit and push that tag only.
 6. Create the GitHub prerelease with the prepared title/notes. Attach no local
    binaries, logs or screenshots. Check links and published contents afterwards.

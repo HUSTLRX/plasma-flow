@@ -60,3 +60,6 @@ Before a stable 1.0 release, validate actual logout/login with and without saved
 applications, delayed restoration, multiple activities, physical monitors and
 sticky windows. Record versions and outcomes, not users' raw configs or window
 identifiers. Broader compatibility claims require corresponding evidence.
+
+See [preparation-validation.md](preparation-validation.md) for the initial standalone
+build, test, source-comparison and privacy audit results.
