@@ -1,0 +1,34 @@
+# Out-of-tree builds are preferred.
+/build*/
+/_build*/
+/stage*/
+CMakeCache.txt
+CMakeFiles/
+Testing/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+build.ninja
+.ninja_*
+*.o
+*.so
+*.so.*
+__pycache__/
+*.py[cod]
+.venv/
+.idea/
+.vscode/
+*.user
+*.swp
+*~
+.DS_Store
+# Keep local captures, runtime state and debugging material out of source control.
+/screenshots/
+/logs/
+/backups/
+/runtime/
+/state/
+*.log
+*.core
+.env
+.env.*

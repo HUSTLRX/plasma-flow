@@ -1,75 +1,31 @@
 # Changelog
 
-## Git
+## 0.1.0 — proposed initial preview, unreleased
 
-### Changes
+### Added
 
-* Added an option to specify the thickness of lines used as indicators
-* Fixed broken window detection (e.g. Steam or Spotify were affected by this)
-* Fixed an issue of not being able to select the Number style under certain conditions
-* Updated some configuration dialog elements to be scalable on HiDPI screens
+- Plasma Flow public identity: Dynamic workspaces for KDE Plasma.
+- Label-free / None-mode indicators with configurable width, height, spacing and
+  corner radius, including dimension-aware radius clamping.
+- Standalone regression tests and isolated native QML/DBus smoke testing.
+- Build, installation, update, removal and restoration-safety documentation.
 
-## 1.4
+### Fixed
 
-### Changes
+- Startup reconciliation no longer creates spares from an uninitialized QML model.
+- Queued desktop-created events no longer append duplicate initial indicators.
+- Shared native management coalesces repeated requests and responds to lifecycle,
+  desktop changes and window-membership events.
+- Occupancy considers windows across screens/activities independently of display
+  filtering; only unnecessary trailing empty workspaces are trimmed.
 
-* Fixed broken Add Desktop context menu option
-* Fixed some issues with hidden or squashed desktop buttons
-* Fixed annoying button jumping when only one desktop button is visible
+### Compatibility and limitations
 
-## 1.3
+- Existing internal package/module/DBus/configuration identities are preserved.
+- Validated environment: Fedora 44, Plasma 6.7.5, Frameworks 6.30, Wayland. These are
+  tested versions, not supported minimums.
+- Potential restoration destinations, current workspaces and sticky windows are
+  protected. Exact one-spare convergence can be deferred conservatively.
+- Real logout/login regression and broader hardware/version testing remain open.
 
-### Changes
-
-* Fixed some issues with window names handling again
-* Fixed visibility of buttons when both options are checked
-* Fixed some issues on Kubuntu 18.04 and distros with older Qt version
-
-## 1.2
-
-### Changes
-
-* Improved handling of window names (no more ugly class names)
-* Fixed broken fade-out animation when removing a non-last desktop
-* Fixed black always being the initial color in color picker dialogs
-* Added an option to change corner radius for the Block indicator style
-* Changed the default length limit for desktop labels to 25 characters
-
-## 1.1
-
-### Changes
-
-* Restored the ability to work with window managers other than KWin
-
-## 1.0
-
-This is a release that introduces breaking changes.
-
-IMPORTANT: User settings from previous versions are ignored.
-
-If you decide to update the plasmoid, be prepared for reconfiguration.
-
-### Changes
-
-* Rewritten some parts of the applet for easier maintenance (and failed)
-* Removed the shortcut-based API for KWin scripts (it was pretty much useless)
-* Merged options related to keeping/removing empty desktops into "dynamic desktops" feature
-* Updated configuration dialogs and rearranged some options and sections
-* Added configuration dialog hints, e.g. explaining mutually exclusive options and more
-* Added an option to only display desktops containing windows
-* Added a feature to move desktops by dragging them with the mouse
-* Added an option to remove desktops with the mouse wheel click (enabled by default)
-* Removed all context menu actions related to the current desktop
-* Added per desktop context menu actions (Rename Desktop, Remove Desktop)
-* Changed naming of the desktop shortcuts to include a prefix for easier recognition
-* Added an option to set common size for all desktop buttons, based on the largest button
-* Added an option to filter occupied desktops by monitor (enabled by default)
-* Added appearance settings for desktops containing windows needing attention
-* Removed some of the existing desktop label styles (they can be recreated)
-* Added a desktop label style displaying the name of the active window on a desktop
-* Added a custom desktop label style that can be formatted with some variables
-* Added options to limit length of desktop labels, and to display them as UPPERCASED
-* Fixed some bugs related to distincting and coloring desktop indicators and labels
-* Added hover tooltips containing brief information about windows present on a given desktop
-
-## ...
+Upstream release notes remain in [docs/upstream-changelog.md](docs/upstream-changelog.md).

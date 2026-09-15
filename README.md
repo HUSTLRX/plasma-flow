@@ -1,168 +1,191 @@
-# Virtual Desktop Bar (Plasma 6)
+# Plasma Flow
 
-Virtual Desktop Bar is a KDE Plasma widget that provides a clean, configurable, text-based virtual desktop switcher. It replaces the default Pager with a compact desktop bar focused on clarity, customization, and modern Plasma 6 Wayland environments.
+**Dynamic workspaces for KDE Plasma.**
 
-The widget displays desktops as labeled buttons with configurable indicators, styling, and behavior options. It also supports optional dynamic desktop management to automatically maintain a spare empty desktop.
-
-This project is a modern continuation of earlier work, updated and maintained specifically for Plasma 6 on Wayland.
-
----
-
-## Screenshots
-
-### Adding, renaming, moving, and removing a desktop:
-![Example 1](screenshots/1.gif)
-
-### Various desktop label styles:
-![Example 1](screenshots/2.gif)
-
-### Various desktop indicator styles:
-![Example 1](screenshots/3.gif)
-
-### Partial support for vertical panels (still a work in progress):
-![Example 1](screenshots/4.png)
-
-*(Screenshots may change as the widget evolves.)*
-
----
+Plasma Flow is a configurable workspace bar for KDE Plasma, with compact
+label-free indicators and optional dynamic workspace management. It is an
+**independent community project**, derived from
+[lenonk/virtual-desktop-bar](https://github.com/lenonk/virtual-desktop-bar),
+and is **not an official KDE project**.
 
 ## Features
 
-### Desktop Switching
-- Displays desktops as labeled buttons instead of thumbnails
-- Quickly switch desktops with a click
-- Optional scroll-wheel desktop switching
-- Optional filtering by screen
+- Switch workspaces by clicking or scrolling; retain upstream label, color,
+  tooltip and indicator-style options.
+- Enable dynamic workspaces to keep **exactly one trailing empty spare when
+  reconciliation is safe**. Occupying the last workspace adds another spare;
+  unnecessary trailing empty workspaces are removed.
+- Use **None** as the label style for indicators without workspace text.
+- Configure None-mode indicator width, height, spacing and corner radius.
+- Reconcile at startup and on window/desktop changes, with duplicate requests
+  coalesced and duplicate initialization events handled safely.
+- Determine occupancy across screens and activities, independently of display
+  filtering, including minimized and skip-taskbar windows.
 
-### Indicator Styles
-Multiple indicator styles are available:
+Dynamic management preserves occupied workspaces, interior gaps and the current
+workspace. Session-restoration reservations and sticky windows can leave extra
+empty workspaces. This is a safety choice, not a guarantee of immediate trimming
+in every session; see [how reconciliation works](docs/reconciliation.md).
 
-- Edge line
-- Side line
-- Block
-- Rounded block
-- Full-size highlight
+## Screenshots
 
-Indicator thickness, radius, colors, and behavior are configurable.
+| Planned illustration | Status |
+| --- | --- |
+| Label-free workspace bar | Placeholder — not yet provided |
+| None-mode sizing controls | Placeholder — not yet provided |
+| Dynamic workspace creation and trimming | Placeholder — not yet provided |
 
-### Label Customization
-Desktop labels support:
+No screenshots are included in this source tree.
 
-- Multiple label styles
-- Custom formatting
-- Maximum length limits
-- Uppercase option
-- Bold current desktop
-- Dim inactive desktops
-- Custom fonts and sizes
-- Custom label colors
+## Compatibility and dependencies
 
-### Appearance Controls
-- Adjustable button spacing and margins
-- Optional uniform button sizing
-- Configurable animations
-- Add-desktop button support
+The substantiated environment for this implementation is **Fedora 44, KDE Plasma
+6.7.5, KDE Frameworks 6.30, and Wayland**. These are validated versions, not claimed
+minimum requirements. Plasma 6 / Wayland is the focus; other distributions,
+versions, X11, and physical multi-monitor arrangements need independent validation.
 
-### Dynamic Desktop Management
-Optionally:
-- Automatically maintain one empty desktop
-- Create desktops as needed
-- Remove unused desktops
-- Optionally switch or rename newly created desktops
-- Execute commands when desktops are created
+Building requires:
 
----
+- CMake (the build declares 3.27), a C++23 compiler, and Ninja or Make;
+- Qt 6 development components: Core, DBus, Qml and Widgets;
+- Extra CMake Modules and KDE Frameworks development packages: I18n, Service,
+  WindowSystem, plus their transitive dependencies;
+- Plasma, Plasma Activities and KWin development packages.
 
-## Installation
+The inherited CMake checks accept Qt 6.4 / Frameworks 6.0, but that does **not**
+establish runtime compatibility with those versions. KWin's development API must
+match the installed compositor. The dynamic controller currently needs the
+systemd user-session restoration service, KSMServer, KWin scripting, and the
+supported Activities DBus API. It leaves desktops alone if readiness is unknown.
 
-### From the AUR (Arch Linux)
+Tests additionally need Python 3, Node.js and a C++ compiler. The native smoke test
+needs Qt 6's `qml` executable, `dbus-run-session`, Python `dbus` and PyGObject/GLib.
+See [development and testing](docs/development.md).
 
-The widget is available in the AUR:
+## Build
 
-`plasma6-applets-virtual-desktop-bar-wayland`
+```sh
+git clone https://github.com/HUSTLRX/plasma-flow.git
+cd plasma-flow
+cmake -S . -B ../plasma-flow-build -G Ninja \
+  -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+cmake --build ../plasma-flow-build -j2
+ctest --test-dir ../plasma-flow-build --output-on-failure
+```
 
-Install using your preferred AUR helper:
+Use `-DBUILD_TESTING=OFF` for a build without the Python test dependency. Building
+and running unit tests do not install the widget or change the desktop.
 
-    paru -S plasma6-applets-virtual-desktop-bar-wayland
+## Install
 
-or:
+Plasma Flow has a **native plugin as well as QML**. Installing only the widget
+package with a package-manager command for plasmoids is insufficient.
 
-    yay -S plasma6-applets-virtual-desktop-bar-wayland
+```sh
+sudo cmake --install ../plasma-flow-build
+```
 
-After installation, add the widget to a panel or desktop via Plasma's widget picker.
+Install only while Plasma is stopped, normally after logging out and switching to
+a text console. This avoids overwriting a native library mapped into a running
+shell. For a staged package instead of a live install:
 
----
+```sh
+DESTDIR=/tmp/plasma-flow-stage cmake --install ../plasma-flow-build
+```
 
-### Manual Installation
+Log in again, then add **Plasma Flow** from Plasma's widget picker. Existing Virtual
+Desktop Bar instances use the same internal identity and do not need recreating.
+The two projects therefore **cannot be installed side by side**: Plasma Flow
+replaces Virtual Desktop Bar's package and native module. If a distribution
+package owns these paths, resolve that package conflict before manual installation.
 
-Clone the repository:
+## Update
 
-    git clone https://github.com/lenonk/virtual-desktop-bar.git
-    cd virtual-desktop-bar
+For updates from the project's main branch:
 
-Build and install:
+```sh
+git switch main
+git pull --ff-only origin main
+cmake -S . -B ../plasma-flow-build -G Ninja \
+  -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+cmake --build ../plasma-flow-build -j2
+ctest --test-dir ../plasma-flow-build --output-on-failure
+```
 
-    cmake -B build
-    cmake --build build
-    sudo cmake --install build
+Alternatively, check out a reviewed release tag before rebuilding. Install both
+QML and native code together. Stop Plasma before installation as
+above, then log back in. Existing widget settings are retained; do not delete or
+recreate panels. A new library on disk does not replace code already loaded by a
+running shell.
 
-Restart plasmashell or re-login if the widget does not appear immediately.
+Before changing versions, retain the previous source/build or distribution package
+for rollback. Do not replace only one half of the QML/native pair.
 
----
+## Uninstall
 
-## Usage
+Remove the widget from any panels where you no longer want it, then log out before
+removing the native files. From a text console, review the build's installation
+manifest and remove exactly those files:
 
-1. Add **Virtual Desktop Bar** to a panel or desktop.
-2. Open widget settings to configure appearance and behavior.
-3. Customize indicator styles, labels, colors, and dynamic desktop options to your liking.
+```sh
+cat ../plasma-flow-build/install_manifest.txt
+sudo xargs -d '\n' rm -- < ../plasma-flow-build/install_manifest.txt
+```
 
----
+Use the manifest from the actual system installation, not a staged installation.
+Do not use this command for a distribution-managed package; uninstall that package
+instead. This leaves personal Plasma configuration intact and may leave empty
+installation directories. To return to upstream Virtual Desktop Bar, install its
+matching QML/native pair before your next login.
 
-## Compatibility
+## Configuration
 
-This widget is designed and tested for:
+Open the widget's settings:
 
-- KDE Plasma 6
-- Wayland sessions
+- **Appearance:** choose label style **None** to remove text. Adjust None-mode
+  width, height, spacing and radius; choose the indicator style and colors.
+  Edge/side-line styles still use line thickness on their thin axis. Radius is
+  limited to half the indicator's dimensions.
+- **Behavior:** enable dynamic desktops, configure wheel navigation, and optionally
+  filter the displayed window information by screen. That filter never limits the
+  occupancy check used to remove workspaces.
+- The optional new-desktop command retains upstream behavior. Leave it empty if
+  no command is needed.
 
-Wayland is required.
+Internal settings remain `DynamicDesktops`, `LabelStyle`, `NoneIndicatorWidth`,
+`NoneIndicatorHeight`, `NoneButtonSpacing` and `NoneIndicatorRadius`. Existing
+settings are reused; the project does not impose a saved desktop count.
 
----
+## Known limitations and restoration safety
 
-## Known Issues
+- KDE reports session applications as launched before every restored window
+  necessarily exists. Potential restoration destinations stay protected for the
+  controller's lifetime; extra empty workspaces may remain in such sessions.
+- Sticky application windows pause dynamic mutations. An empty current trailing
+  workspace is retained until the user switches away. Interior holes are retained.
+- Unknown/failed startup state, shutdown, and unavailable or unsupported activity
+  APIs prevent changes. Non-systemd sessions do not currently reconcile dynamically.
+- Application-managed restoration outside KDE's saved session records cannot be
+  inferred from an empty window list.
+- Vertical-panel behavior and physical multi-monitor combinations need broader
+  testing. Automated cross-screen/activity tests are not hardware certification.
+- Full logout/login regression validation is still pending. The proposed `0.1.0`
+  release is an initial preview, not a declaration of broad production stability.
 
-Some Plasma panel visibility modes currently interfere with virtual desktop widgets. If desktops do not update correctly:
+See [reconciliation and startup safety](docs/reconciliation.md) for the exact
+policy and [differences from upstream](docs/upstream.md) for compatibility choices.
 
-- Avoid panel modes that hide the panel automatically, or
-- Use standard visibility modes.
+## Development, attribution and license
 
-Upstream Plasma behavior may change in future releases.
+Run `python3 -B -m unittest discover -s tests -v` for the standalone regression
+suite; no surrounding desktop-configuration repository is needed. Native smoke
+checks use fake services on a private DBus bus. See [development.md](docs/development.md)
+for staging, testing and validation limits.
 
----
-
-## Contributing
-
-Bug reports, suggestions, and pull requests are welcome.
-
-If reporting an issue, please include:
-- Plasma version
-- Distribution
-- Steps to reproduce the problem
-
----
-
-## License
-
-This project is distributed under the GPL license. See repository files for details.
-
----
-
-## Acknowledgements
-
-This project builds upon earlier virtual desktop bar efforts within the KDE community and continues development for modern Plasma environments.
-
----
-## Support
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K51TO6S1)
-
+Plasma Flow retains the Git history, authorship and copyright notices of
+**Virtual Desktop Bar**, including the upstream authors **Lenon Kitchens** and
+**wsdfhjxc**. The upstream repository is
+[lenonk/virtual-desktop-bar](https://github.com/lenonk/virtual-desktop-bar).
+Its original license text is preserved unchanged in [LICENSE](LICENSE), the
+GNU General Public License, version 3. Earlier release history is preserved in
+[the upstream changelog](docs/upstream-changelog.md) and Git history.

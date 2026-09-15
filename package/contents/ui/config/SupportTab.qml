@@ -110,7 +110,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             Layout.preferredWidth: 0      // IMPORTANT: allow shrinking in layouts
             wrapMode: Text.Wrap
-            text: i18n("If Virtual Desktop Bar makes your Plasma workflow nicer and you’d like to support ongoing maintenance and improvements, here’s the easiest way to do it.")
+            text: i18n("Plasma Flow is an independent community project derived from Virtual Desktop Bar. You can also support the original upstream author using the link below.")
         }
 
         RowLayout {
@@ -118,7 +118,7 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             Button {
-                text: i18n("Support me on Ko-fi")
+                text: i18n("Support the upstream author on Ko-fi")
                 icon.name: "emblem-favorite"
                 onClicked: Qt.openUrlExternally(root.kofiUrl)
             }

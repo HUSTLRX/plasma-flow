@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.27)
 
-project(virtual-desktop-bar)
+project(plasma-flow VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -33,3 +33,10 @@ install(FILES
         ${CMAKE_SOURCE_DIR}/package/contents/icons/hicolor/scalable/apps/virtualdesktopbar.svg
         DESTINATION ${KDE_INSTALL_ICONDIR}/hicolor/scalable/apps
 )
+
+include(CTest)
+if(BUILD_TESTING)
+    find_package(Python3 REQUIRED COMPONENTS Interpreter)
+    add_test(NAME plasma-flow-regressions
+        COMMAND ${Python3_EXECUTABLE} -B -m unittest discover -s ${CMAKE_CURRENT_SOURCE_DIR}/tests -v)
+endif()
