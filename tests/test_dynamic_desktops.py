@@ -21,7 +21,7 @@ function setup(count, occupied, ready=true, floor=1) {
     w.currentDesktop=w.desktops[0];
     function window(desktops, other={}) {
         return Object.assign({desktops:desktops.map(n=>w.desktops[n-1]),onAllDesktops:false,
-            desktopsChanged:signal(),activitiesChanged:signal(),screen:0,activities:['a']},other);
+            managed:true,desktopsChanged:signal(),activitiesChanged:signal(),screen:0,activities:['a']},other);
     }
     w.windows=occupied.map(n=>window([n]));
     w.windowList=()=>w.windows.slice();
@@ -29,7 +29,7 @@ function setup(count, occupied, ready=true, floor=1) {
         w.desktops.push({id:'d'+(++serial)});w.desktopsChanged.emit();};
     w.removeDesktop=(d)=>{
         assert.equal(d,w.desktops[w.desktops.length-1]);
-        assert(!w.windows.some(win=>!win.deleted&&!win.dock&&!win.desktopWindow&&
+        assert(!w.windows.some(win=>!win.deleted&&win.managed!==false&&!win.dock&&!win.desktopWindow&&
             (win.onAllDesktops||win.desktops.includes(d))),'occupied desktop removed');
         operations.push('remove:'+d.id);w.desktops.pop();w.desktopsChanged.emit();};
     const context={workspace:w,callDBus:(service,path,iface,method,...args)=>{
@@ -44,7 +44,65 @@ function setup(count, occupied, ready=true, floor=1) {
 @unittest.skipUnless(shutil.which('node'), 'Node required for actual reconciler tests')
 class DynamicDesktopTests(unittest.TestCase):
     def run_case(self, code):
-        subprocess.run(['node', '-e', HARNESS + code, str(DYNAMIC/'reconcile.js')], check=True, capture_output=True, text=True)
+        result = subprocess.run(['node', '-e', HARNESS + code, str(DYNAMIC/'reconcile.js')], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_repeated_launch_occupy_collapse_cycles_with_unmanaged_surface(self):
+        self.run_case("""const t=setup(2,[1]);t.flush();
+        for(let cycle=0;cycle<20;cycle++) {
+            assert.equal(t.w.desktops.length,2);
+            t.w.currentDesktop=t.w.desktops[1];t.w.currentDesktopChanged.emit();
+            const app=t.window([2]);t.w.windows.push(app);t.w.windowAdded.emit(app);t.flush();
+            assert.equal(t.w.desktops.length,3,'launch cycle '+cycle);
+            assert.equal(t.operations.filter(x=>x==='create').length,cycle+1);
+            t.w.windows=t.w.windows.filter(w=>w!==app);app.deleted=true;t.w.windowRemoved.emit(app);
+            t.w.currentDesktop=t.w.desktops[0];t.w.currentDesktopChanged.emit();t.flush();
+            assert.equal(t.w.desktops.length,2);
+            if(cycle===0) {
+                const helper=t.window([],{managed:false,onAllDesktops:true,normalWindow:false});
+                t.w.windows.push(helper);t.w.windowAdded.emit(helper);t.flush();
+            }
+        }
+        assert.equal(t.operations.length,40);assert.equal(t.queue.length,0);
+        """)
+
+    def test_repeated_move_occupy_collapse_cycles_with_unmanaged_surface(self):
+        self.run_case("""const t=setup(2,[1,1]);t.flush();const app=t.w.windows[1];
+        for(let cycle=0;cycle<20;cycle++) {
+            app.desktops=[t.w.desktops[1]];app.desktopsChanged.emit();t.flush();
+            assert.equal(t.w.desktops.length,3,'move cycle '+cycle);
+            app.desktops=[t.w.desktops[0]];app.desktopsChanged.emit();t.flush();
+            assert.equal(t.w.desktops.length,2);
+            if(cycle===0) {
+                const helper=t.window([],{managed:false,onAllDesktops:true,normalWindow:false});
+                t.w.windows.push(helper);t.w.windowAdded.emit(helper);t.flush();
+            }
+        }
+        assert.equal(t.operations.length,40);assert.equal(t.queue.length,0);
+        """)
+
+    def test_unmanaged_surface_does_not_reserve_a_desktop(self):
+        self.run_case("""const t=setup(3,[1]);
+        t.w.windows.push(t.window([3],{managed:false}));t.flush();
+        assert.equal(t.w.desktops.length,2);""")
+
+    def test_managed_sticky_window_still_pauses_after_successful_cycle(self):
+        self.run_case("""const t=setup(2,[1]);t.flush();const app=t.w.windows[0];
+        app.desktops=[t.w.desktops[1]];app.desktopsChanged.emit();t.flush();
+        assert.equal(t.w.desktops.length,3);
+        app.desktops=[t.w.desktops[0]];app.desktopsChanged.emit();t.flush();
+        assert.equal(t.w.desktops.length,2);
+        app.desktops=[];app.onAllDesktops=true;app.desktopsChanged.emit();t.flush();
+        assert.equal(t.w.desktops.length,2);assert.equal(t.operations.length,2);
+        app.onAllDesktops=false;app.desktops=[t.w.desktops[1]];app.desktopsChanged.emit();t.flush();
+        assert.equal(t.w.desktops.length,3);""")
+
+    def test_delayed_desktop_assignment_retriggers_on_membership_signal(self):
+        self.run_case("""const t=setup(2,[1]);t.flush();
+        const app=t.window([]);t.w.windows.push(app);t.w.windowAdded.emit(app);t.flush();
+        assert.equal(t.w.desktops.length,2);
+        app.desktops=[t.w.desktops[1]];app.desktopsChanged.emit();t.flush();
+        assert.equal(t.w.desktops.length,3);""")
 
     def test_persisted_three_reconciles_after_startup_without_task_count_change(self):
         self.run_case("""const t=setup(3,[1],false);t.flush();assert.equal(t.w.desktops.length,3);

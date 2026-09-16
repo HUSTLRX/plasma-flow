@@ -58,7 +58,10 @@
     "plugin/dynamic/DynamicDesktops.hpp": "a2516f15763dbcce5a751b5585e5b6f1f0693c59c4f732594ec8ab6f5a9208fc",
     "plugin/dynamic/StartupPolicy.hpp": "5585848f90776713936941026c906ffa15a36f2d7f979bf4e6ae7a1130a74fc6",
     "plugin/dynamic/dynamic.qrc": "2a8b0ee01d00a5ec9c3334bc87688c7b3ff03ae63c0b100b9dc861c6bb7839d0",
-    "plugin/dynamic/reconcile.js": "97aeb370698394e22fc24716a76988ca88e2a3a7cdb035db1854196d7ea8d88d",
+    "plugin/dynamic/reconcile.js": "f87e6a7095c55bfb779d033436add24d5e9586bb107360365803739588916125",
     "plugin/qmldir": "251a76e1e3f6438e6481cb61fe863d10fb1ae71e9a5b9f93f71edb4068be39ca"
+  },
+  "reviewed_fixes": {
+    "plugin/dynamic/reconcile.js": "Exclude unmanaged surfaces from workspace occupancy and the sticky-application guard; repeated launch/move cycles remain event-driven."
   }
 }

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.1 — Dynamic workspace reconciliation fix
+
+### Fixed
+
+- Ignore unmanaged KWin surfaces when computing workspace occupancy. Their empty
+  desktop membership previously triggered the sticky-application safeguard and
+  blocked subsequent spare creation, including after successful create/collapse
+  cycles. Managed sticky applications retain their conservative protection.
+- Add repeated launch and move regression tests, each exercising 20 cycles.
+
 ## 0.1.0 — Initial preview
 
 ### Added

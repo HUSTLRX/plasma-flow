@@ -21,7 +21,10 @@ function reconcile() {
             var windows = workspace.windowList();
             for (var i = 0; i < windows.length; ++i) {
                 var window = windows[i];
-                if (window.deleted || window.desktopWindow || window.dock) continue;
+                // windowList() also contains unmanaged X11/override-redirect
+                // surfaces. Their empty desktop list is not a sticky application;
+                // treating it as one vetoes every later create/collapse cycle.
+                if (window.deleted || window.managed === false || window.desktopWindow || window.dock) continue;
                 // Sticky application windows must not cause endless spare creation.
                 // Conservatively leave the layout alone while any are present.
                 if (window.onAllDesktops || !window.desktops.length) return;

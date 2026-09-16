@@ -17,7 +17,7 @@ class SourceIntegrityTests(unittest.TestCase):
         plugin = json.loads((ROOT/'package/metadata.json').read_text())['KPlugin']
         self.assertEqual(plugin['Name'], 'Plasma Flow')
         self.assertEqual(plugin['Id'], 'org.kde.plasma.virtualdesktopbar')
-        self.assertEqual(plugin['Version'], '0.1.0')
+        self.assertEqual(plugin['Version'], '0.1.1')
         self.assertEqual([author['Name'] for author in plugin['Authors']], ['Lenon Kitchens','wsdfhjxc'])
 
     def test_dynamic_manager_is_not_bound_to_filtered_display_model(self):

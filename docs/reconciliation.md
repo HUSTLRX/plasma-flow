@@ -18,8 +18,25 @@ list changes. This avoids acting repeatedly on an out-of-date QML ListModel.
 
 All screens and activities contribute to occupancy. Minimized, skip-pager and
 skip-taskbar application windows count. Desktop backgrounds and panels do not.
+Unmanaged surfaces also do not count: KWin can include these in `windowList()`
+with empty desktop membership, which must not be mistaken for a sticky application.
 Sticky application windows pause mutation rather than making every new spare
 appear occupied and causing unbounded desktop creation.
+
+## Repeat-cycle regression
+
+An unmanaged surface with empty desktop membership previously activated the
+global sticky-application guard. Reconciliation could receive events normally
+but return without creating a spare for an occupied trailing desktop. This
+explains why successful earlier create/collapse cycles did not guarantee later
+ones would work. The occupancy filter now excludes explicitly unmanaged surfaces;
+event subscriptions, request coalescing and restoration safeguards are unchanged.
+
+Regression tests introduce such a surface after the first successful cycle and
+exercise 20 launch/collapse cycles and 20 move/collapse cycles. Separate tests
+retain managed sticky-window protection and cover delayed desktop assignment.
+Bounded live validation passed three launch/collapse and three move/collapse
+cycles using disposable test windows, without session restarts or polling.
 
 ## Startup boundary
 

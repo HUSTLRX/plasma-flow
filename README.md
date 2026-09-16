@@ -172,8 +172,8 @@ settings are reused; the project does not impose a saved desktop count.
 - The maintainer reports a successful real logout/login regression on Fedora 44,
   Plasma 6.7.5, Frameworks 6.30, Wayland: one occupied desktop plus one trailing
   empty spare, with two indicators and no recurrence of the startup bug. This
-  single-system result does not establish broader compatibility. `0.1.0` remains
-  an initial preview.
+  single-system result does not establish broader compatibility. `0.1.1` remains
+  an early release with these compatibility limitations.
 
 See [reconciliation and startup safety](docs/reconciliation.md) for the exact
 policy and [differences from upstream](docs/upstream.md) for compatibility choices.
