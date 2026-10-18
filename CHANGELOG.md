@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Remove the Support settings tab and its upstream Ko-fi donation link.
+
 ## 0.1.1 — Dynamic workspace reconciliation fix
 
 ### Fixed

@@ -21,15 +21,6 @@ PlasmaConfig.ConfigModel {
         property int weight: 20
     }
 
-    PlasmaConfig.ConfigCategory {
-        name: i18n("Support")
-        icon: "emblem-favorite"
-        source: "config/SupportTab.qml"
-
-        property bool expanded: false
-        property int weight: 20
-    }
-
     property bool immutable: false
     property bool isDefaults: true
 }

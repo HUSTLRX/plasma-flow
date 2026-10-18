@@ -23,10 +23,10 @@ Fifteen added/modified implementation files comprise the functional import:
 - All five `plugin/dynamic/` files: controller, readiness predicate, embedded KWin
   script and resources.
 
-`source-provenance.json` records the upstream base and hashes for the 49 files
+`source-provenance.json` records the upstream base and hashes for the 48 files
 preserved byte-for-byte after branding. Intentional adaptations are the README,
-changelog, root CMake project/test setup, public package metadata and Support tab
-wording. The support link is explicitly attributed to the original upstream author.
+changelog, root CMake project/test setup, public package metadata and configuration categories. The Support tab and its
+upstream donation link have been removed.
 Production reconciliation and indicator code remain unchanged by standalone
 preparation. Tests and documentation are standalone additions.
 

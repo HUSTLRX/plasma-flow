@@ -8,12 +8,11 @@
     "CHANGELOG.md",
     "CMakeLists.txt",
     "package/metadata.json",
-    "package/contents/ui/config/SupportTab.qml"
+    "package/contents/config/config.qml"
   ],
   "preserved_sha256": {
     "LICENSE": "589ed823e9a84c56feb95ac58e7cf384626b9cbf4fda2a907bc36e103de1bad2",
     "icons/sc-apps-virtualdesktopbar.svg": "be99aacec79bc01a34d99af4aa0d7ae7af77ac9422ebd1d4d0cbf4f52bd6b1d5",
-    "package/contents/config/config.qml": "47f564a39f34696ea7d4f91ea70c370a1da005f47efafa0e41914e9baa1a3cc0",
     "package/contents/config/main.xml": "0f0928c7ad1a464067018bafdbb6442b5b4093cc6ad453fe51e6c5d7e84ebf50",
     "package/contents/icons/hicolor/scalable/apps/virtualdesktopbar.svg": "9668efa404a038cb3534cc4b952182663304fe7e3348666d1d06326d958721f1",
     "package/contents/ui/ActivityButton/ActivityButton.qml": "1150f24a7118fa745796f138798f624775eca983022b27679ee54ac48e83f1ca",
@@ -63,5 +62,8 @@
   },
   "reviewed_fixes": {
     "plugin/dynamic/reconcile.js": "Exclude unmanaged surfaces from workspace occupancy and the sticky-application guard; repeated launch/move cycles remain event-driven."
-  }
+  },
+  "intentional_removals": [
+    "package/contents/ui/config/SupportTab.qml"
+  ]
 }
