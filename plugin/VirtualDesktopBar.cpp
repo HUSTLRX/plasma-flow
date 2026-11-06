@@ -591,3 +591,16 @@ VirtualDesktopBar::onCurrentChanged(const QString &id) {
 }
 
 #include "moc_VirtualDesktopBar.cpp"
+
+// Use the installed kgnome Overview action without launching a shell command.
+bool VirtualDesktopBar::toggleOverview() {
+    auto msg = QDBusMessage::createMethodCall(QSL("org.kde.kglobalaccel"),
+        QSL("/component/kwin"), QSL("org.kde.kglobalaccel.Component"), QSL("invokeShortcut"));
+    msg << QSL("Toggle GNOME Overview");
+    const auto reply = QDBusConnection::sessionBus().call(msg, QDBus::Block, 1000);
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        qWarning() << "Cannot toggle GNOME Overview:" << reply.errorMessage();
+        return false;
+    }
+    return true;
+}

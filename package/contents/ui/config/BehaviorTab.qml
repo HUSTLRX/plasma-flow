@@ -12,6 +12,8 @@ pragma ComponentBehavior: Bound
 
 KCM.SimpleKCM {
     id: root
+    property bool cfg_GnomeMode
+    property bool cfg_GnomeModeDefault
 
     // Add config keys used on other tabs (Plasma injects all cfg_* into every tab)
     property bool   cfg_AnimationsEnable

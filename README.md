@@ -156,6 +156,29 @@ Internal settings remain `DynamicDesktops`, `LabelStyle`, `NoneIndicatorWidth`,
 `NoneIndicatorHeight`, `NoneButtonSpacing` and `NoneIndicatorRadius`. Existing
 settings are reused; the project does not impose a saved desktop count.
 
+## GNOME Activities mode
+
+In Appearance, enable **GNOME Activities** for a single Activities button: a
+white active pill, dim inactive dots, 5 px layout spacing, count-dependent pill
+width and animated transitions. Click anywhere to toggle the installed kgnome
+Overview; Space/Return work when keyboard focused. Scroll up/left to the previous
+workspace and down/right to the next, without wrapping. Hovering a dragged item
+opens Overview after 250 ms. The traditional per-workspace bar remains selectable.
+Dynamic desktop management is controlled separately in Behavior.
+
+Visual metrics follow GNOME Shell's [panel implementation](https://github.com/GNOME/gnome-shell/blob/main/js/ui/panel.js)
+and [panel stylesheet](https://github.com/GNOME/gnome-shell/blob/main/data/theme/gnome-shell-sass/widgets/_panel.scss).
+The normal horizontal two-workspace layout uses a 29 × 8 px active pill and a
+6 × 6 px inactive dot inside an 8 px slot. The entire button highlights on hover.
+
+This is a Plasma implementation, not GNOME Shell: workspace changes animate
+between reported desktop indices, rather than tracking a gesture continuously;
+removal does not yet reproduce GNOME's shrinking exit animation; the hover state
+does not track whether Overview is open. Existing conservative workspace cleanup
+still preserves interior gaps and restoration reservations. Overview/gestures
+remain provided by kgnome/KWin. These differences prevent an exact behavioral
+match. The mode requires kgnome's `Toggle GNOME Overview` shortcut action.
+
 ## Known limitations and restoration safety
 
 - KDE reports session applications as launched before every restored window

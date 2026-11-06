@@ -57,6 +57,7 @@ public:
     Q_INVOKABLE static bool setDesktopName(const QString& id, const QString &name);
     Q_INVOKABLE static bool setCurrentDesktop(qint32 number);
     Q_INVOKABLE static bool nextDesktop();
+    Q_INVOKABLE static bool toggleOverview();
     Q_INVOKABLE static bool previousDesktop();
     Q_INVOKABLE static bool moveDesktop(const QString &id, quint32 targetIndex);
     Q_INVOKABLE static QString getIconFromDesktopFile(const QString &desktopFile);

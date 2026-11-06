@@ -7,6 +7,10 @@
     <kcfgfile name=""/>
 
     <group name="Behavior">
+        <entry name="GnomeMode" type="Bool">
+            <label>GNOME Activities indicator and interaction</label>
+            <default>false</default>
+        </entry>
         <!-- Behavior - Empty desktops -->
         <entry name="EmptyDesktopName" type="String">
             <label>The default name assigned to newly created virtual desktops.</label>

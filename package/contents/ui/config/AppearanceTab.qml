@@ -15,6 +15,8 @@ pragma ComponentBehavior: Bound
 
 KCM.SimpleKCM {
     id: root
+    property alias cfg_GnomeMode: gnomeMode.checked
+    property bool cfg_GnomeModeDefault
 
     // Add config keys used on other tabs (Plasma injects all cfg_* into every tab)
     property string cfg_EmptyDesktopName
@@ -125,6 +127,11 @@ KCM.SimpleKCM {
     property alias cfg_IndicatorDistinctAttention: indicatorDistinctAttentionCheckBox.checked
 
     Kirigami.FormLayout {
+        CheckBox {
+            id: gnomeMode
+            Kirigami.FormData.label: "Workspace style:"
+            text: "GNOME Activities (click for Overview, scroll to switch)"
+        }
         Item { Kirigami.FormData.isSection: true }
 
         RowLayout {

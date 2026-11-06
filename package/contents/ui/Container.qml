@@ -22,8 +22,10 @@ Item {
     signal nextDesktop()
     signal previousDesktop()
 
-    implicitWidth: desktopButtonGrid.implicitWidth
-    implicitHeight: desktopButtonGrid.implicitHeight
+    width: implicitWidth
+    height: implicitHeight
+    implicitWidth: config.GnomeMode ? gnomeIndicator.implicitWidth : desktopButtonGrid.implicitWidth
+    implicitHeight: config.GnomeMode ? gnomeIndicator.implicitHeight : desktopButtonGrid.implicitHeight
 
     Common.Backend {
         id: backend
@@ -92,6 +94,8 @@ Item {
 
     DesktopButton.DesktopButtonGrid {
         id: desktopButtonGrid
+        visible: !config.GnomeMode
+        enabled: visible
 
         anchors.centerIn: parent
         container: root
@@ -99,9 +103,19 @@ Item {
         property bool isRenamingDesktop: root.isRenamingDesktop
 
         Component.onCompleted: {
-            root.width = desktopButtonGrid.implicitWidth;
             updateScreenFiltering();
         }
+    }
+
+    GnomeIndicator {
+        id: gnomeIndicator
+        anchors.centerIn: parent
+        visible: config.GnomeMode
+        enabled: visible
+        desktops: root.desktopInfoList
+        controller: backend
+        animations: config.AnimationsEnable
+        vertical: Common.LayoutProps.isVerticalOrientation
     }
 
     // Watch for changes to FilterByScreen config

@@ -40,3 +40,12 @@ if(BUILD_TESTING)
     add_test(NAME plasma-flow-regressions
         COMMAND ${Python3_EXECUTABLE} -B -m unittest discover -s ${CMAKE_CURRENT_SOURCE_DIR}/tests -v)
 endif()
+
+if(BUILD_TESTING)
+    find_program(QMLTESTRUNNER qmltestrunner HINTS /usr/lib64/qt6/bin /usr/lib/qt6/bin)
+    if(QMLTESTRUNNER)
+        add_test(NAME gnome-indicator-interactions COMMAND ${QMLTESTRUNNER}
+            -input ${CMAKE_CURRENT_SOURCE_DIR}/tests/qml)
+        set_tests_properties(gnome-indicator-interactions PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+    endif()
+endif()
